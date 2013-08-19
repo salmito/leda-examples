@@ -73,9 +73,9 @@ split:push(vetor)
 merge.size=#vetor
 
 --Executes
-local resultado=g:run()--{controller=require'leda.controller.interactive'}
+local result=g:run()--{controller=require'leda.controller.interactive'}
 
 --Print results
-for i,v in ipairs(resultado) do
+for i,v in ipairs(result) do
    print('array['..i..']',v)
 end
