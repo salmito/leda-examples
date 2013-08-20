@@ -69,7 +69,7 @@ local vector={10,7,9,8,4,5,2,1,3,6,11,15}
 
 --Put the test vector into the split stage's input queue
 split:push(vector)
---Tells the vector size to the merge stage
+--Set the vector size to the merge stage
 merge.size=#vector
 
 --Executes

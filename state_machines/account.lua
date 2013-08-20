@@ -2,7 +2,10 @@ local _=require 'leda'
 
 assert(pcall(require,'repl'),"This example requires luarepl, please install it before")
 
-local function load_state()
+local function load_state(file)
+	if file then
+		self.file=file
+	end
 	if self.file then
 		local f=io.open(self.file,"r")
 		if f then
@@ -16,6 +19,8 @@ end
 local function save_state(file)
 	if file then
 		self.file=file
+	end
+	if self.file then
 		local f=assert(io.open(self.file,"w"))
 		assert(f:write(leda.encode(self)))
 		f:close()
@@ -31,7 +36,7 @@ local account=leda.stage{
    	local arg={...}
       if op=='withdraw' then
       	local v=tonumber(arg[1])
-      	assert(v>0.0,"Must withraw a positive ammount")
+      	assert(v>0.0,"Must withdraw a positive ammount")
          self.balance=self.balance-v
         	save_state()
       elseif op=='deposit' then
@@ -54,10 +59,10 @@ local account=leda.stage{
    serial=true
 }
 
-local account1=leda.stage"Account 1"(account)
+local account1=leda.stage"A1"(account)
 account1.balance=5000
 account1.file='account1.dat'
-local account2=leda.stage"Account 2"(account)
+local account2=leda.stage"A2"(account)
 account2.balance=10000
 account2.file='account2.dat'
 
@@ -68,13 +73,10 @@ local printer=leda.stage{
 	serial=true
 }
 
-local repl=require'leda.stage.util.repl'
-
 local gr=leda.graph{
    account1:connect('balance',printer),
    account2:connect('balance',printer),
-   repl(1)..account1,
-   repl(2)..account2,
+	require'leda.stage.util.repl'
 }
 
 return gr:run()
